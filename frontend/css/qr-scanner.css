@@ -1,0 +1,124 @@
+/*
+  qr-scanner.css
+  Styles for the QR Scanner page: camera viewport, scan result card,
+  and stock adjustment controls shown after a successful scan.
+*/
+
+.scanner-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-8);
+  align-items: start;
+  max-width: 1000px;
+}
+
+@media (max-width: 800px) {
+  .scanner-layout { grid-template-columns: 1fr; }
+}
+
+.scanner-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-rest);
+  padding: var(--space-6);
+}
+
+.scanner-card h2 {
+  font-size: var(--fs-lg);
+  margin-bottom: var(--space-2);
+}
+
+.scanner-card p.hint {
+  color: var(--stone-500);
+  font-size: var(--fs-sm);
+  margin-bottom: var(--space-4);
+}
+
+#qrReaderViewport {
+  width: 100%;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: #0f1e17; /* fixed, not theme-swapping -- always a dark camera viewport */
+}
+
+.scanner-start-btn {
+  width: 100%;
+  margin-top: var(--space-4);
+}
+
+.scan-result-empty {
+  color: var(--stone-500);
+  text-align: center;
+  padding: var(--space-16) var(--space-4);
+}
+
+.scan-result-product {
+  display: none;
+}
+
+.scan-result-product.is-visible {
+  display: block;
+}
+
+.scan-result-product h3 {
+  font-size: var(--fs-xl);
+  margin-bottom: var(--space-1);
+}
+
+.scan-result-product .sku {
+  font-family: var(--font-mono);
+  color: var(--stone-500);
+  font-size: var(--fs-sm);
+  margin-bottom: var(--space-4);
+}
+
+.scan-result-qty {
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xl);
+  font-weight: 700;
+  margin: var(--space-4) 0;
+}
+
+.scan-quick-actions {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  margin-top: var(--space-4);
+}
+
+.scan-quick-actions button {
+  flex: 1;
+  min-width: 60px;
+  padding: 10px 8px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--stone-200);
+  background: var(--white);
+  font-family: var(--font-mono);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.scan-quick-actions button.increase {
+  color: var(--stock-green-700);
+  border-color: rgba(46, 125, 91, 0.3);
+}
+.scan-quick-actions button.increase:hover { background: rgba(46, 125, 91, 0.08); }
+
+.scan-quick-actions button.decrease {
+  color: var(--terracotta-700);
+  border-color: rgba(194, 91, 74, 0.3);
+}
+.scan-quick-actions button.decrease:hover { background: rgba(194, 91, 74, 0.08); }
+
+.scan-result-error {
+  display: none;
+  color: var(--terracotta-700);
+  background: rgba(194, 91, 74, 0.08);
+  border: 1px solid rgba(194, 91, 74, 0.2);
+  border-radius: var(--radius-sm);
+  padding: var(--space-3);
+  font-size: var(--fs-sm);
+}
+
+.scan-result-error.is-visible { display: block; }

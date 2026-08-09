@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Analytics — Smart Inventory</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/tokens.css?v=v4" />
+  <link rel="stylesheet" href="../css/app-shell.css?v=v4" />
+  <link rel="stylesheet" href="../css/analytics.css?v=v4" />
+</head>
+<body>
+
+  <div class="app-shell">
+    <aside class="app-sidebar">
+      <div class="app-sidebar__brand">
+        <div class="app-sidebar__brand-mark">SI</div>
+        <div class="app-sidebar__brand-name">Inventory</div>
+      </div>
+      <nav>
+        <a href="./dashboard.html"><span class="nav-label">Dashboard</span></a>
+        <a href="./inventory.html"><span class="nav-label">Inventory</span></a>
+        <a href="./qr-scanner.html"><span class="nav-label">QR Scanner</span></a>
+        <a href="./analytics.html" class="is-active"><span class="nav-label">Analytics</span></a>
+        <a href="./reports.html"><span class="nav-label">Reports</span></a>
+        <a href="./ai-assistant.html"><span class="nav-label">AI Assistant</span></a>
+      </nav>
+    </aside>
+
+    <div class="app-main">
+      <header class="app-topbar">
+        <h1 class="app-topbar__title">Analytics</h1>
+        <div class="app-topbar__user">
+          <span id="userEmail">Loading...</span>
+          <button class="app-topbar__logout" id="themeToggleBtn">🌙 Dark</button>
+          <button class="app-topbar__logout" id="logoutBtn">Log out</button>
+        </div>
+      </header>
+
+      <main class="app-content">
+        <div class="stat-highlight-row">
+          <div class="stat-highlight">
+            <div class="stat-highlight__label">Total Stock Value (cost)</div>
+            <div class="stat-highlight__value" id="statCostValue">—</div>
+          </div>
+          <div class="stat-highlight">
+            <div class="stat-highlight__label">Potential Revenue</div>
+            <div class="stat-highlight__value" id="statRevenue">—</div>
+          </div>
+          <div class="stat-highlight">
+            <div class="stat-highlight__label">Potential Profit</div>
+            <div class="stat-highlight__value" id="statProfit">—</div>
+          </div>
+        </div>
+
+        <div class="analytics-grid">
+          <div class="chart-card">
+            <h2>Category Distribution</h2>
+            <p class="hint">Share of total stock quantity by category</p>
+            <canvas id="categoryPieChart"></canvas>
+          </div>
+
+          <div class="chart-card">
+            <h2>Stock Value by Category</h2>
+            <p class="hint">Cost value of current stock, by category</p>
+            <canvas id="stockValueBarChart"></canvas>
+          </div>
+
+          <div class="chart-card full-width">
+            <h2>Monthly Inventory Growth</h2>
+            <p class="hint">Products added per month, last 6 months</p>
+            <canvas id="growthBarChart"></canvas>
+          </div>
+
+          <div class="chart-card full-width">
+            <h2>Most Active Products</h2>
+            <p class="hint">Approximated from recorded stock decreases — not verified sales data</p>
+            <ul class="most-active-list" id="mostActiveList">
+              <li>Loading...</li>
+            </ul>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.5.0/chart.umd.min.js"></script>
+  <script src="../js/firebase-init.js?v=v4"></script>
+  <script src="../js/components/theme-toggle.js?v=v4"></script>
+  <script src="../js/services/api.js?v=v4"></script>
+  <script src="../js/services/products-api.js?v=v4"></script>
+  <script src="../js/components/toast.js?v=v4"></script>
+  <script src="../js/pages/analytics.js?v=v4"></script>
+</body>
+</html>

@@ -1,0 +1,221 @@
+/*
+  app-shell.css
+  Shared layout for authenticated pages: sidebar + topbar + content area.
+  This is the shell every real page (inventory, dashboard, etc.) sits inside.
+*/
+
+.app-shell {
+  display: flex;
+  min-height: 100vh;
+  background: var(--paper-50);
+}
+
+.app-sidebar {
+  width: 220px;
+  flex-shrink: 0;
+  /* Deliberately fixed colors, NOT theme variables: the sidebar is a
+     permanent dark ledger spine regardless of light/dark mode toggle.
+     Using --ink-900/--paper-50 here was a real bug -- those variables
+     invert in dark mode, which flipped the sidebar to a light
+     background with dark (near-invisible) text instead of staying
+     dark with light text. */
+  background: #0f1e17;
+  color: #f7f3ea;
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-6) var(--space-4);
+  position: relative;
+}
+
+/* Stitched spine seam along the right edge -- the sidebar reads as
+   the bound edge of a ledger book, not a flat UI panel. */
+.app-sidebar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 3px;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    rgba(217, 164, 65, 0.5) 0px,
+    rgba(217, 164, 65, 0.5) 3px,
+    transparent 3px,
+    transparent 11px
+  );
+}
+
+.app-sidebar__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-8);
+}
+
+.app-sidebar__brand-mark {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  background: var(--stock-green-600);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: var(--fs-xs);
+}
+
+.app-sidebar__brand-name {
+  font-family: var(--font-display);
+  font-size: var(--fs-lg);
+  font-weight: 600;
+}
+
+.app-sidebar nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.app-sidebar nav a {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 10px var(--space-3);
+  border-radius: var(--radius-sm);
+  color: rgba(247, 243, 234, 0.65);
+  text-decoration: none;
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  transition: background 0.15s ease, color 0.15s ease, padding-left 0.15s ease;
+  position: relative;
+}
+
+.app-sidebar nav a:hover {
+  background: rgba(247, 243, 234, 0.06);
+  color: #f7f3ea;
+  padding-left: calc(var(--space-3) + 3px);
+}
+
+/* Active state reads as a tucked bookmark ribbon rather than a flat
+   filled pill: a notch cut on the right side, like a page-marker
+   peeking out from the ledger spine. */
+.app-sidebar nav a.is-active {
+  background: var(--stock-green-600);
+  color: white;
+  font-weight: 600;
+}
+
+.app-sidebar nav a.is-active::after {
+  content: '';
+  position: absolute;
+  right: -3px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+  border-left: 5px solid var(--brass-500);
+}
+
+.app-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.app-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-4) var(--space-8);
+  background: var(--white);
+  position: relative;
+}
+
+/* A torn-receipt edge instead of a flat 1px border -- small, but it's
+   the kind of detail that separates "designed for this brief" from
+   "default card border". */
+.app-topbar::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 4px;
+  background-image: repeating-linear-gradient(
+    -63deg,
+    var(--stone-200) 0px,
+    var(--stone-200) 1px,
+    transparent 1px,
+    transparent 8px
+  );
+  opacity: 0.9;
+}
+
+.app-topbar__title {
+  font-size: var(--fs-xl);
+}
+
+.app-topbar__user {
+  font-size: var(--fs-sm);
+  color: var(--stone-500);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.app-topbar__logout {
+  background: none;
+  border: 1px solid var(--stone-200);
+  color: var(--ink-900);
+  padding: 6px 14px;
+  border-radius: var(--radius-sm);
+  font-size: var(--fs-sm);
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+}
+
+.app-topbar__logout:hover {
+  border-color: var(--terracotta-600);
+  color: var(--terracotta-700);
+}
+
+.app-content {
+  flex: 1;
+  padding: var(--space-8);
+  overflow-y: auto;
+}
+
+@media (max-width: 900px) {
+  .app-shell { flex-direction: column; }
+  .app-sidebar {
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-3) var(--space-4);
+  }
+  .app-sidebar::after {
+    /* Stitched seam moves to the bottom edge in horizontal mode */
+    top: auto;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: auto;
+    height: 3px;
+    background-image: repeating-linear-gradient(
+      to right,
+      rgba(217, 164, 65, 0.5) 0px,
+      rgba(217, 164, 65, 0.5) 3px,
+      transparent 3px,
+      transparent 11px
+    );
+  }
+  .app-sidebar__brand { margin-bottom: 0; }
+  .app-sidebar nav { flex-direction: row; }
+  .app-sidebar nav a span.nav-label { display: none; }
+  .app-sidebar nav a.is-active::after { display: none; }
+}

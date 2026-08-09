@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inventory — Smart Inventory</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/tokens.css?v=v4" />
+  <link rel="stylesheet" href="../css/app-shell.css?v=v4" />
+  <link rel="stylesheet" href="../css/inventory.css?v=v4" />
+</head>
+<body>
+
+  <div class="app-shell">
+    <aside class="app-sidebar">
+      <div class="app-sidebar__brand">
+        <div class="app-sidebar__brand-mark">SI</div>
+        <div class="app-sidebar__brand-name">Inventory</div>
+      </div>
+      <nav>
+        <a href="./dashboard.html"><span class="nav-label">Dashboard</span></a>
+        <a href="./inventory.html" class="is-active"><span class="nav-label">Inventory</span></a>
+        <a href="./qr-scanner.html"><span class="nav-label">QR Scanner</span></a>
+        <a href="./analytics.html"><span class="nav-label">Analytics</span></a>
+        <a href="./reports.html"><span class="nav-label">Reports</span></a>
+        <a href="./ai-assistant.html"><span class="nav-label">AI Assistant</span></a>
+      </nav>
+    </aside>
+
+    <div class="app-main">
+      <header class="app-topbar">
+        <h1 class="app-topbar__title">Inventory</h1>
+        <div class="app-topbar__user">
+          <span id="userEmail">Loading...</span>
+          <button class="app-topbar__logout" id="themeToggleBtn">🌙 Dark</button>
+          <button class="app-topbar__logout" id="logoutBtn">Log out</button>
+        </div>
+      </header>
+
+      <main class="app-content">
+        <div class="inventory-toolbar">
+          <div class="inventory-toolbar__filters">
+            <input type="text" id="searchInput" placeholder="Search name, SKU, vendor, category..." />
+            <select id="categoryFilter">
+              <option value="">All categories</option>
+            </select>
+            <select id="stockFilter">
+              <option value="">All stock levels</option>
+              <option value="low_stock">Low stock</option>
+              <option value="out_of_stock">Out of stock</option>
+            </select>
+            <select id="sortBy">
+              <option value="newest">Newest first</option>
+              <option value="name_asc">Name (A–Z)</option>
+              <option value="name_desc">Name (Z–A)</option>
+              <option value="quantity_asc">Quantity (low–high)</option>
+              <option value="quantity_desc">Quantity (high–low)</option>
+              <option value="price_asc">Price (low–high)</option>
+              <option value="price_desc">Price (high–low)</option>
+            </select>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button class="btn-secondary" id="exportCsvBtn" style="padding:10px 16px;">Export CSV</button>
+            <button class="btn-secondary" id="importCsvBtn" style="padding:10px 16px;">Import CSV</button>
+            <input type="file" id="csvFileInput" accept=".csv" style="display:none;" />
+            <button class="btn-add-product" id="openAddModalBtn">+ Add Product</button>
+          </div>
+        </div>
+
+        <div class="product-table-wrap">
+          <table class="product-table">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>SKU</th>
+                <th>Category</th>
+                <th>Quantity</th>
+                <th>Cost / Sell</th>
+                <th>Vendor</th>
+                <th>Stock actions</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="productTableBody">
+              <tr class="skeleton-row"><td colspan="8"><div class="skeleton-bar"></div></td></tr>
+              <tr class="skeleton-row"><td colspan="8"><div class="skeleton-bar"></div></td></tr>
+              <tr class="skeleton-row"><td colspan="8"><div class="skeleton-bar"></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Add / Edit Product Modal -->
+  <div class="modal-overlay" id="productModalOverlay">
+    <div class="modal-card">
+      <div class="modal-card__header">
+        <h2 id="modalTitle">Add Product</h2>
+        <button class="modal-card__close" id="closeModalBtn">&times;</button>
+      </div>
+
+      <form id="productForm" novalidate>
+        <input type="hidden" id="productId" />
+        <div class="modal-form-grid">
+          <div class="field field-full">
+            <label for="productName">Product name *</label>
+            <input type="text" id="productName" required />
+            <div class="field-error" id="productNameError"></div>
+          </div>
+
+          <div class="field">
+            <label for="productSku">SKU *</label>
+            <input type="text" id="productSku" placeholder="e.g. RICE-5KG" required />
+            <div class="field-error" id="productSkuError"></div>
+          </div>
+
+          <div class="field">
+            <label for="productCategory">Category *</label>
+            <input type="text" id="productCategory" placeholder="e.g. Grains" required />
+            <div class="field-error" id="productCategoryError"></div>
+          </div>
+
+          <div class="field">
+            <label for="productQuantity">Quantity</label>
+            <input type="number" id="productQuantity" min="0" value="0" />
+          </div>
+
+          <div class="field">
+            <label for="productThreshold">Low-stock threshold</label>
+            <input type="number" id="productThreshold" min="0" value="5" />
+          </div>
+
+          <div class="field">
+            <label for="productCostPrice">Cost price</label>
+            <input type="number" id="productCostPrice" min="0" step="0.01" value="0" />
+          </div>
+
+          <div class="field">
+            <label for="productSellingPrice">Selling price</label>
+            <input type="number" id="productSellingPrice" min="0" step="0.01" value="0" />
+          </div>
+
+          <div class="field field-full">
+            <label for="productVendor">Vendor name</label>
+            <input type="text" id="productVendor" placeholder="e.g. Sharma Distributors" />
+          </div>
+        </div>
+
+        <div class="modal-card__footer">
+          <button type="button" class="btn-secondary" id="cancelModalBtn">Cancel</button>
+          <button type="submit" class="btn-primary" id="saveProductBtn" style="width:auto;">Save product</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Delete confirmation modal -->
+  <div class="modal-overlay" id="deleteModalOverlay">
+    <div class="modal-card" style="max-width: 420px;">
+      <div class="modal-card__header">
+        <h2>Delete product?</h2>
+        <button class="modal-card__close" id="closeDeleteModalBtn">&times;</button>
+      </div>
+      <p style="color: var(--stone-500); margin: 0 0 var(--space-4);">
+        This will permanently remove <strong id="deleteProductName"></strong> from your inventory. This can't be undone.
+      </p>
+      <div class="modal-card__footer">
+        <button type="button" class="btn-secondary" id="cancelDeleteBtn">Cancel</button>
+        <button type="button" class="btn-danger" id="confirmDeleteBtn">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- QR code view modal -->
+  <div class="modal-overlay" id="qrModalOverlay">
+    <div class="modal-card" style="max-width: 340px; text-align: center;">
+      <div class="modal-card__header">
+        <h2 style="font-size: var(--fs-lg);">Product QR Code</h2>
+        <button class="modal-card__close" id="closeQrModalBtn">&times;</button>
+      </div>
+      <p id="qrModalProductName" style="font-weight: 600; margin-bottom: var(--space-4);"></p>
+      <img id="qrModalImage" alt="QR code" style="width: 220px; height: 220px; border-radius: var(--radius-sm); border: 1px solid var(--stone-200);" />
+      <p style="color: var(--stone-500); font-size: var(--fs-xs); margin: var(--space-4) 0;">
+        Scan this at the till to open the product or adjust stock instantly.
+      </p>
+      <a id="qrModalDownloadBtn" class="btn-primary" style="display:inline-block; text-decoration:none; width:auto; padding: 10px 24px;" download>
+        Download QR
+      </a>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script src="../js/firebase-init.js?v=v4"></script>
+  <script src="../js/components/theme-toggle.js?v=v4"></script>
+  <script src="../js/services/api.js?v=v4"></script>
+  <script src="../js/services/products-api.js?v=v4"></script>
+  <script src="../js/components/toast.js?v=v4"></script>
+  <script src="../js/pages/inventory.js?v=v4"></script>
+</body>
+</html>

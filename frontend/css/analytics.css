@@ -1,0 +1,85 @@
+/*
+  analytics.css
+  Styles for the Analytics page: chart cards and stat highlights.
+*/
+
+.analytics-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-6);
+  margin-bottom: var(--space-6);
+}
+
+@media (max-width: 900px) {
+  .analytics-grid { grid-template-columns: 1fr; }
+}
+
+.chart-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-rest);
+  padding: var(--space-6);
+}
+
+.chart-card h2 {
+  font-size: var(--fs-lg);
+  margin-bottom: var(--space-1);
+}
+
+.chart-card p.hint {
+  color: var(--stone-500);
+  font-size: var(--fs-xs);
+  margin-bottom: var(--space-4);
+}
+
+.chart-card canvas {
+  max-height: 280px;
+}
+
+.chart-card.full-width {
+  grid-column: 1 / -1;
+}
+
+.stat-highlight-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+
+.stat-highlight {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-rest);
+  padding: var(--space-5);
+}
+
+.stat-highlight__label {
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--stone-500);
+  margin-bottom: var(--space-2);
+}
+
+.stat-highlight__value {
+  font-family: var(--font-display);
+  font-size: var(--fs-2xl);
+  font-weight: 600;
+}
+
+.most-active-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.most-active-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: var(--space-2) 0;
+  border-bottom: 1px solid var(--stone-200);
+  font-size: var(--fs-sm);
+}
+
+.most-active-list li:last-child { border-bottom: none; }

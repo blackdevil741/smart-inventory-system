@@ -1,0 +1,236 @@
+/*
+  auth.css
+  Styles for the Login / Signup / Forgot Password screens.
+
+  Signature element: the auth card is shaped like a market price tag —
+  a punched hole + perforated left edge, string-tied to the wordmark
+  above it. This is the one deliberate visual risk for this page;
+  everything else stays quiet (flat paper background, restrained type).
+*/
+
+.auth-screen {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-6);
+  background:
+    radial-gradient(circle at 15% 20%, rgba(46, 125, 91, 0.06), transparent 40%),
+    radial-gradient(circle at 85% 85%, rgba(217, 164, 65, 0.08), transparent 45%),
+    var(--paper-50);
+}
+
+.auth-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-8);
+  animation: tag-settle 0.6s ease-out;
+}
+
+.auth-brand__mark {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  background: var(--stock-green-600);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: var(--fs-sm);
+}
+
+.auth-brand__name {
+  font-family: var(--font-display);
+  font-size: var(--fs-xl);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.auth-brand__name span {
+  color: var(--stock-green-600);
+}
+
+/* ---- The price-tag card ---- */
+.tag-card {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lifted);
+  padding: var(--space-8) var(--space-6) var(--space-6);
+  transform-origin: top center;
+  animation: tag-settle 0.6s cubic-bezier(0.2, 0.8, 0.3, 1);
+}
+
+/* Punched hole at the top, like a real price tag */
+.tag-card::before {
+  content: '';
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 28px;
+  height: 28px;
+  background: var(--paper-50);
+  border: 3px solid var(--stone-200);
+  border-radius: 50%;
+  box-shadow: inset 0 2px 4px rgba(15, 30, 23, 0.08);
+}
+
+/* Perforated edge along the left side */
+.tag-card::after {
+  content: '';
+  position: absolute;
+  top: var(--space-4);
+  bottom: var(--space-4);
+  left: 0;
+  width: 1px;
+  background-image: linear-gradient(var(--stone-200) 60%, transparent 0%);
+  background-size: 1px 10px;
+  background-repeat: repeat-y;
+  opacity: 0.7;
+}
+
+@keyframes tag-settle {
+  from { opacity: 0; transform: translateY(-10px) rotate(-1.5deg); }
+  to   { opacity: 1; transform: translateY(0) rotate(0deg); }
+}
+
+.tag-card__eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--stone-500);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: var(--space-1);
+}
+
+.tag-card__title {
+  font-size: var(--fs-2xl);
+  margin-bottom: var(--space-1);
+}
+
+.tag-card__subtitle {
+  font-size: var(--fs-sm);
+  color: var(--stone-500);
+  margin-bottom: var(--space-6);
+}
+
+.field {
+  margin-bottom: var(--space-4);
+}
+
+.field label {
+  display: block;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  margin-bottom: var(--space-2);
+  color: var(--ink-900);
+}
+
+.field input {
+  width: 100%;
+  padding: 10px var(--space-3);
+  border: 1.5px solid var(--stone-200);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: var(--fs-base);
+  background: var(--paper-50);
+  color: var(--ink-900);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.field input:focus {
+  outline: none;
+  border-color: var(--stock-green-600);
+  box-shadow: 0 0 0 3px rgba(46, 125, 91, 0.15);
+}
+
+.field-error {
+  color: var(--terracotta-700);
+  font-size: var(--fs-xs);
+  margin-top: var(--space-1);
+  min-height: 1em;
+}
+
+.field-row-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: var(--fs-sm);
+  margin-bottom: var(--space-6);
+}
+
+.link-muted {
+  color: var(--stock-green-600);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.link-muted:hover {
+  text-decoration: underline;
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 12px var(--space-4);
+  background: var(--stock-green-600);
+  color: var(--white);
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: var(--fs-base);
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.btn-primary:hover {
+  background: var(--stock-green-700);
+}
+
+.btn-primary:active {
+  transform: scale(0.99);
+}
+
+.btn-primary:disabled {
+  background: var(--stone-200);
+  color: var(--stone-500);
+  cursor: not-allowed;
+}
+
+.auth-switch {
+  text-align: center;
+  margin-top: var(--space-6);
+  font-size: var(--fs-sm);
+  color: var(--stone-500);
+}
+
+.auth-alert {
+  display: none;
+  padding: var(--space-3);
+  border-radius: var(--radius-sm);
+  font-size: var(--fs-sm);
+  margin-bottom: var(--space-4);
+}
+
+.auth-alert--error {
+  background: rgba(194, 91, 74, 0.1);
+  color: var(--terracotta-700);
+  border: 1px solid rgba(194, 91, 74, 0.25);
+}
+
+.auth-alert--success {
+  background: rgba(46, 125, 91, 0.1);
+  color: var(--stock-green-700);
+  border: 1px solid rgba(46, 125, 91, 0.25);
+}
+
+.auth-alert.is-visible {
+  display: block;
+}

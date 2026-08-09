@@ -1,0 +1,330 @@
+/*
+  inventory.css
+  Styles for the Inventory page: toolbar, product table, status badges,
+  the Add/Edit product modal, and empty/loading states.
+*/
+
+.inventory-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-6);
+}
+
+.inventory-toolbar__filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  flex: 1;
+}
+
+.inventory-toolbar__filters input[type="text"],
+.inventory-toolbar__filters select {
+  padding: 8px 12px;
+  border: 1.5px solid var(--stone-200);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: var(--fs-sm);
+  background: var(--white);
+  color: var(--ink-900);
+}
+
+.inventory-toolbar__filters input[type="text"] {
+  min-width: 220px;
+}
+
+.inventory-toolbar__filters input:focus,
+.inventory-toolbar__filters select:focus {
+  outline: none;
+  border-color: var(--stock-green-600);
+}
+
+.btn-add-product {
+  background: var(--stock-green-600);
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: var(--fs-sm);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s ease;
+}
+
+.btn-add-product:hover {
+  background: var(--stock-green-700);
+}
+
+/* ---- Product table ---- */
+.product-table-wrap {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-rest);
+  overflow: hidden;
+}
+
+table.product-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.product-table thead th {
+  text-align: left;
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--stone-500);
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--stone-200);
+  white-space: nowrap;
+}
+
+.product-table tbody td {
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--stone-200);
+  font-size: var(--fs-sm);
+  vertical-align: middle;
+}
+
+.product-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.product-table tbody tr:hover {
+  background: var(--paper-50);
+}
+
+.product-table tbody tr.is-low-stock {
+  background: rgba(217, 164, 65, 0.08);
+}
+
+.product-table tbody tr.is-out-of-stock {
+  background: rgba(194, 91, 74, 0.08);
+}
+
+.product-name-cell {
+  font-weight: 600;
+}
+
+.product-sku-cell {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--stone-500);
+}
+
+/* Stock status uses the shared .ink-stamp primitive (see tokens.css)
+   -- a rubber-stamp look rather than a rounded pill, so status reads
+   as "marked" on the ledger rather than a generic UI chip. */
+.qty-badge {
+  color: var(--stock-green-700);
+}
+
+.qty-badge--ok {
+  color: var(--stock-green-700);
+}
+
+.qty-badge--low {
+  color: #8a6417;
+}
+
+.qty-badge--out {
+  color: var(--terracotta-700);
+}
+
+.stock-quick-actions {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.stock-quick-actions button {
+  border: 1px solid var(--stone-200);
+  background: var(--white);
+  border-radius: var(--radius-sm);
+  padding: 2px 7px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.stock-quick-actions button:hover {
+  background: var(--paper-100);
+}
+
+.stock-quick-actions button.increase { color: var(--stock-green-700); }
+.stock-quick-actions button.decrease { color: var(--terracotta-700); }
+
+.row-actions {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.row-actions button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: var(--fs-sm);
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  color: var(--stone-500);
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.row-actions button:hover {
+  background: var(--paper-100);
+}
+
+.row-actions button.edit:hover { color: var(--stock-green-700); }
+.row-actions button.delete:hover { color: var(--terracotta-700); }
+
+/* ---- Empty / loading states ---- */
+.table-empty-state,
+.table-loading-state {
+  padding: var(--space-16) var(--space-6);
+  text-align: center;
+  color: var(--stone-500);
+}
+
+.table-empty-state h3 {
+  margin-bottom: var(--space-2);
+  color: var(--ink-900);
+}
+
+.skeleton-row td {
+  padding: var(--space-3) var(--space-4);
+}
+
+.skeleton-bar {
+  height: 14px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--paper-100) 25%, var(--stone-200) 37%, var(--paper-100) 63%);
+  background-size: 400% 100%;
+  animation: skeleton-shimmer 1.4s ease infinite;
+}
+
+@keyframes skeleton-shimmer {
+  0% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* ---- Modal ---- */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 30, 23, 0.45);
+  display: none;
+  align-items: flex-start;
+  justify-content: center;
+  padding: var(--space-8) var(--space-4);
+  overflow-y: auto;
+  z-index: 100;
+}
+
+.modal-overlay.is-open {
+  display: flex;
+}
+
+.modal-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lifted);
+  width: 100%;
+  max-width: 560px;
+  padding: var(--space-6);
+  animation: modal-pop 0.2s ease-out;
+}
+
+@keyframes modal-pop {
+  from { opacity: 0; transform: translateY(8px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.modal-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-4);
+}
+
+.modal-card__close {
+  background: none;
+  border: none;
+  font-size: var(--fs-xl);
+  cursor: pointer;
+  color: var(--stone-500);
+  line-height: 1;
+}
+
+.modal-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+}
+
+.modal-form-grid .field-full { grid-column: 1 / -1; }
+
+.modal-card__footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+}
+
+.btn-secondary {
+  background: var(--paper-100);
+  color: var(--ink-900);
+  border: none;
+  padding: 10px 18px;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: var(--fs-sm);
+  cursor: pointer;
+}
+
+.btn-danger {
+  background: var(--terracotta-600);
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: var(--fs-sm);
+  cursor: pointer;
+}
+
+/* ---- Toasts ---- */
+.toast-stack {
+  position: fixed;
+  bottom: var(--space-6);
+  right: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  z-index: 200;
+}
+
+.toast {
+  /* Fixed colors, not theme variables -- a toast is always a dark ink
+     bubble with light text, same bug class as the sidebar above: these
+     variables invert in dark mode and would make toast text vanish. */
+  background: #0f1e17;
+  color: #f7f3ea;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-sm);
+  font-size: var(--fs-sm);
+  box-shadow: var(--shadow-lifted);
+  animation: toast-in 0.2s ease-out;
+  max-width: 320px;
+}
+
+.toast.toast--error { background: var(--terracotta-600); }
+.toast.toast--success { background: var(--stock-green-700); }
+
+@keyframes toast-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

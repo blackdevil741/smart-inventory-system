@@ -1,0 +1,180 @@
+/*
+  tokens.css
+  Design tokens for Smart Inventory System.
+
+  Subject: local shopkeepers & market vendors — the visual language
+  borrows from price tags, receipt paper, and ledger books rather than
+  generic "startup SaaS" gradients. Every color/type choice below is
+  referenced by name in css/*.css files so the palette stays consistent
+  as we build out each phase.
+*/
+
+:root {
+  /* ---- Color: "ledger & price tag" palette ---- */
+  --ink-900: #0f1e17;        /* deep market-green ink, headings on light bg */
+  --paper-50: #f7f3ea;       /* receipt paper cream, main background */
+  --paper-100: #efe9db;      /* slightly deeper paper, card backgrounds */
+  --stock-green-600: #2e7d5b;  /* primary brand / in-stock */
+  --stock-green-700: #24614a;
+  --brass-500: #d9a441;      /* warm accent, low-stock warning */
+  --terracotta-600: #c25b4a; /* out-of-stock / destructive -- backgrounds, borders, large text */
+  --terracotta-700: #a84632; /* same family, darkened for AA contrast when used as small body/label text on paper */
+  --stone-500: #8a8578;      /* muted secondary text */
+  --stone-200: #ded8c8;      /* hairlines, dividers */
+  --white: #fffdf8;
+
+  /* Dark mode surface (toggled later in Phase 6) */
+  --ink-dark-bg: #12201a;
+  --ink-dark-surface: #182a22;
+
+  /* ---- Typography ---- */
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+
+  --fs-xs: 0.75rem;
+  --fs-sm: 0.875rem;
+  --fs-base: 1rem;
+  --fs-lg: 1.125rem;
+  --fs-xl: 1.5rem;
+  --fs-2xl: 2rem;
+  --fs-3xl: 2.75rem;
+
+  /* ---- Spacing scale ---- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  /* ---- Shape & elevation ---- */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  /* Shadows tuned per-surface rather than one blanket value: a resting
+     card sits almost flat (paper doesn't cast much shadow), while a
+     lifted/interactive surface (modals, the auth card) gets real depth. */
+  --shadow-rest: 0 1px 0 rgba(15, 30, 23, 0.04), 0 1px 3px rgba(15, 30, 23, 0.05);
+  --shadow-card: 0 1px 2px rgba(15, 30, 23, 0.06), 0 8px 24px rgba(15, 30, 23, 0.08);
+  --shadow-lifted: 0 4px 8px rgba(15, 30, 23, 0.08), 0 16px 40px rgba(15, 30, 23, 0.12);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--paper-50);
+  color: var(--ink-900);
+  -webkit-font-smoothing: antialiased;
+  /* A faint fiber texture over the paper background -- the kind of
+     grain you'd see on real receipt/ledger stock under raking light.
+     Subtle by design: felt, not decorative. */
+  background-image:
+    radial-gradient(rgba(15, 30, 23, 0.025) 1px, transparent 1px),
+    radial-gradient(rgba(15, 30, 23, 0.018) 1px, transparent 1px);
+  background-size: 3px 3px, 7px 7px;
+  background-position: 0 0, 2px 3px;
+}
+
+html[data-theme="dark"] body {
+  background-image:
+    radial-gradient(rgba(247, 243, 234, 0.02) 1px, transparent 1px),
+    radial-gradient(rgba(247, 243, 234, 0.015) 1px, transparent 1px);
+  background-size: 3px 3px, 7px 7px;
+  background-position: 0 0, 2px 3px;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  color: var(--ink-900);
+  margin: 0;
+}
+
+a {
+  color: inherit;
+}
+
+.mono {
+  font-family: var(--font-mono);
+}
+
+/* ---- Ink stamp: shared status-badge language across the app ----
+   Used anywhere a status needs marking (low stock, out of stock, etc.)
+   -- styled like a rubber date-stamp on a ledger page rather than a
+   generic rounded pill, since this is the one recurring UI motif tying
+   the whole app back to the login screen's price-tag signature. */
+.ink-stamp {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 3px;
+  border: 1.5px solid currentColor;
+  transform: rotate(-1deg);
+  position: relative;
+}
+
+.ink-stamp::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+}
+
+/* Numerals (quantities, prices) get slightly more visual weight than
+   surrounding prose -- in a shopkeeper's world, the number IS the
+   content, not a supporting detail. */
+.ledger-numeral {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/* Respect reduced motion preference across the whole app */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ---- Dark mode overrides ---- */
+/* Toggled by adding data-theme="dark" to <html>, persisted via
+   localStorage (safe here -- this is a real browser context, not a
+   sandboxed artifact, so localStorage works normally). */
+html[data-theme="dark"] {
+  --ink-900: #F7F3EA;
+  --paper-50: #12201A;
+  --paper-100: #182A22;
+  --white: #1B2B23;
+  --stone-200: #2C3D34;
+  --stone-500: #9AA79E;
+}
+
+html[data-theme="dark"] .app-sidebar {
+  background: #0A1510;
+}
+
+html[data-theme="dark"] .tag-card::before {
+  background: var(--paper-50);
+}
